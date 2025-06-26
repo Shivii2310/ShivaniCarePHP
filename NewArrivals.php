@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Arrivals</title>
+</head>
+<body>
+    login token
+eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJodHRwczovL2lkZW50aXR5dG9vbGtpdC5nb29nbGVhcGlzLmNvbS9nb29nbGUuaWRlbnRpdHkuaWRlbnRpdHl0b29sa2l0LnYxLklkZW50aXR5VG9vbGtpdCIsImlhdCI6MTc1MDk2NzM0OSwiZXhwIjoxNzUwOTcwOTQ5LCJpc3MiOiJmaXJlYmFzZS1hZG1pbnNkay02cjM0eUB0YWJuaW5lLWF1dGgtMzQwMDE1LmlhbS5nc2VydmljZWFjY291bnQuY29tIiwic3ViIjoiZmlyZWJhc2UtYWRtaW5zZGstNnIzNHlAdGFibmluZS1hdXRoLTM0MDAxNS5pYW0uZ3NlcnZpY2VhY2NvdW50LmNvbSIsInVpZCI6ImM5QW1Fandmd0JhUmJ5cmJralhrWHFvNXlROTMifQ.DMpvd548sEe2SHFKTImfBSyXkzM4ePE0IdJtyvAN7NYgTOcFHyELD1acfFC35ipVqJbMEG8eVTWplY_jWY0-T8HTqGwwkTh3UC8jPyl9g5eq_m1XmEz2daieaU_mUOBh73LbDJoKlcSCUM3DyglwR3Xiua7naO0CuReZPiQAW1xsM3j3HC4qvZdwt1CwdgXXnh9K8I1KtxYKZS8WvOUUb8b1x5zFEtw-G4df7Y7TCZFWgSwjKNzeAnAEAzDMbsB2m4jcTrjAuiS0Y5xUoLfCohsT-KRmUiJDa9x4E5jnkPccudFpXsFAYcH545THpVV39aQ-ac37lRCjCI_JTiwkUw
+</body>
+</html>
