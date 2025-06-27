@@ -6,6 +6,18 @@
   <title>BRANDS</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
   <style>
+    /* Start Animation  */
+.fade-up {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 1.2s ease;
+}
+
+.fade-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+  /* End Animation  */
     .hero-section {
       position: relative;
       background-color:#F8F8F8;
@@ -108,7 +120,7 @@
   <!-- Left content -->
   <div class="container position-relative z-3">
     <div class="row">
-      <div class="col-md-6 hero-content">
+      <div class="col-md-6 hero-content fade-up"id="brandsQuote">
         <h2>
           Luxury isn't price – it's<br />
           how our products make<br />
@@ -171,7 +183,15 @@
         </div>
     </div>
 </section>
+<!-- Start  Animation  -->
+<script>
+  window.addEventListener('load', () => {
+    // document.getElementById('brandsText').classList.add('visible');
+    document.getElementById('brandsQuote').classList.add('visible');
+  });
+</script>
 
+<!-- End Animation  -->
 <?php include 'Footer.php';?>
 </div>
 </body>
