@@ -40,7 +40,6 @@ $allowedCategories = ['Skincare', 'Makeup', 'Haircare']; // fixed order
 </div>
 
 <!-- Dynamic Product Sections -->
-<!-- Dynamic Product Sections -->
 <?php foreach ($allowedCategories as $category): ?>
   <?php if (!empty($productsByCategory[$category])): ?>
     <section class="container py-5">
