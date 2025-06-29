@@ -9,6 +9,16 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
+// ✅ Delete item if "delete" parameter is set
+if (isset($_GET['delete'])) {
+    $delete_id = intval($_GET['delete']);
+    $delete_query = "DELETE FROM cart_items WHERE id = $delete_id AND user_id = $user_id";
+    mysqli_query($conn, $delete_query);
+    header("Location: cart.php"); // redirect to avoid resubmission
+    exit;
+}
+
+// ✅ Fetch cart items
 $query = "SELECT * FROM cart_items WHERE user_id = $user_id";
 $result = mysqli_query($conn, $query);
 ?>
@@ -17,6 +27,7 @@ $result = mysqli_query($conn, $query);
 <head>
   <title>Your Cart</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
 </head>
 <body>
 <?php include 'Navbar.php'; ?>
@@ -33,7 +44,14 @@ $result = mysqli_query($conn, $query);
         $total += $subtotal;
       ?>
         <div class="col">
-          <div class="card">
+          <div class="card position-relative">
+            <!-- ❌ Delete Icon -->
+            <a href="cart.php?delete=<?= $item['id'] ?>" 
+               class="position-absolute top-0 end-0 p-2 text-danger"
+               onclick="return confirm('Are you sure you want to remove this item?');">
+              <i class="bi bi-x text-black fs-4"></i>
+            </a>
+
             <div class="row g-0">
               <div class="col-md-4">
                 <img src="uploads/<?= htmlspecialchars(basename($item['product_image'])) ?>"
@@ -58,11 +76,9 @@ $result = mysqli_query($conn, $query);
     <!-- Total Summary -->
     <div class="mt-5">
       <h4 class="text-start"><strong>Total: ₹<?= $total ?></strong></h4>
-       <!-- Action Buttons -->
-       <div class="mt-auto">
-            <?php $isLoggedIn = isset($_SESSION['user_id']); ?>
-            <a href="checkout.php" class="btn btn-danger px-3 py-1 w-25" onclick="<?= $isLoggedIn ? "addToCart({$product['id']})" : "redirectToSignin()" ?>">Proceed to Checkout</a>
-          </div>
+      <div class="mt-3">
+        <a href="checkout.php" class="btn btn-danger px-3 py-2 w-25">Proceed to Checkout</a>
+      </div>
     </div>
 
   <?php else: ?>
