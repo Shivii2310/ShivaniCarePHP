@@ -40,29 +40,30 @@ $allowedCategories = ['Skincare', 'Makeup', 'Haircare']; // fixed order
 </div>
 
 <!-- Dynamic Product Sections -->
+<!-- Dynamic Product Sections -->
 <?php foreach ($allowedCategories as $category): ?>
   <?php if (!empty($productsByCategory[$category])): ?>
     <section class="container py-5">
       <h2 class="fw-bold mb-4"><?= htmlspecialchars($category) ?></h2>
       <div class="d-flex overflow-auto flex-nowrap gap-3 pb-2">
         <?php foreach ($productsByCategory[$category] as $product): ?>
-        <div class="card h-100 border-0" style="min-width: 250px;">
-          <img src="uploads/<?= htmlspecialchars(basename($product['productImage'])) ?>" 
-               class="card-img-top rounded-5 object-fit-cover" 
-               style="height:17rem;" 
-               alt="<?= htmlspecialchars($product['productName']) ?>">
-          <div class="card-body px-0">
-            <p class="card-text"><?= htmlspecialchars($product['productName']) ?></p>
-            <h6>MRP: ₹<?= htmlspecialchars($product['productPrice']) ?></h6>
+        <a href="product_details.php?id=<?= $product['id'] ?>" class="text-decoration-none text-dark">
+          <div class="card h-100 border-0" style="min-width: 250px;">
+            <img src="uploads/<?= htmlspecialchars(basename($product['productImage'])) ?>" 
+                 class="card-img-top rounded-5 object-fit-cover" 
+                 style="height:17rem;" 
+                 alt="<?= htmlspecialchars($product['productName']) ?>">
+            <div class="card-body px-0">
+              <p class="card-text"><?= htmlspecialchars($product['productName']) ?></p>
+              <h6>MRP: ₹<?= htmlspecialchars($product['productPrice']) ?></h6>
+            </div>
           </div>
-        </div>
+        </a>
         <?php endforeach; ?>
       </div>
     </section>
   <?php endif; ?>
 <?php endforeach; ?>
-
-
 <!-- Dots -->
 <div class="text-center mt-4">
   <span class="dot active"></span>
