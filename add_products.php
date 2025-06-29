@@ -1,6 +1,6 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+// error_reporting(E_ALL);
+// ini_set('display_errors', 1);
 
 include 'dbconnection.php';
 
@@ -135,6 +135,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               <option value="Skincare" <?= (($_POST['productCategory'] ?? '') == 'Skincare') ? 'selected' : '' ?>>Skincare</option>
               <option value="Haircare" <?= (($_POST['productCategory'] ?? '') == 'Haircare') ? 'selected' : '' ?>>Haircare</option>
               <option value="Fragrance" <?= (($_POST['productCategory'] ?? '') == 'Fragrance') ? 'selected' : '' ?>>Fragrance</option>
+              <option value="Logo" <?= (($_POST['productCategory'] ?? '') == 'Logo') ? 'selected' : '' ?>>Logo</option>
             </select>
           </div>
 
