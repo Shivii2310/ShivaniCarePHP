@@ -1,3 +1,19 @@
+<!-- start fetching data categries wise -->
+<?php
+include 'dbconnection.php';
+session_start();
+
+$query = "SELECT id, productName, productDescription, productPrice, productCategory, productImage FROM products";
+$result = mysqli_query($conn, $query);
+
+$productsByCategory = [];
+while ($row = mysqli_fetch_assoc($result)) {
+    $productsByCategory[$row['productCategory']][] = $row;
+}
+
+$allowedCategories = ['Skincare', 'Makeup', 'Haircare']; // fixed order
+?>
+<!-- end -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -55,256 +71,36 @@
 </section>
    </div>     
 
-
 <!-- New Arrivals -->
-<section class="container py-3">
-    <h2 class="fw-bold mb-4 text-center">New Arrivals</h2>
-<!-- face -->
-    <h2 class="fw-bold mb-4" style="color:#C7026E;">Face</h2>
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-        <!-- Card 1 -->
-        <div class="col">
-            <div class="card h-100 border-0"> <!-- Removed rounded-5 from card -->
-                <img src="images/face1.png" class="card-img-top rounded-5 object-fit-cover" style="height: 18rem;" alt="Product Image">
-                <div class="card-body px-0"> <!-- Added px-0 to remove horizontal padding -->
-                    <p class="card-text">Renee Cosmetics Bollywood Filter Face Primer</p>
-                    <h6>MRP: ₹359</h6>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Card 2 -->
-        <div class="col">
-            <div class="card h-100 border-0">
-                <img src="images/face2.png" class="card-img-top rounded-5 object-fit-cover" style="height:18rem;" alt="Product Image">
-                <div class="card-body px-0">
-                    <p class="card-text">Kay Beauty HD Liquid Concealer - 170P Tan</p>
-                    <h6>MRP: ₹679</h6>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Card 3 -->
-        <div class="col">
-            <div class="card h-100 border-0">
-                <img src="images/face3.png" class="card-img-top rounded-5 object-fit-cover" style="height:18rem;" alt="Product Image">
-                <div class="card-body px-0">
-                    <p class="card-text">Lakme 9 To 5 Cc Vitamin E & Hint Of Foundation Beige</p>
-                    <h6>MRP: ₹899</h6>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Card 4 -->
-        <div class="col">
-            <div class="card h-100 border-0">
-                <img src="images/face4.png" class="card-img-top rounded-5 object-fit-cover" style="height:18rem;" alt="Product Image">
-                <div class="card-body px-0">
-                    <p class="card-text">Daily Life Forever52 Ultra Definition Liquid Foundation </p>
-                    <h6>MRP: ₹799</h6>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
 
-<!-- Eyes -->
-<section class="container py-3">
-    <h2 class="fw-bold mb-4" style="color:#C7026E;">Eyes</h2>
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-        <!-- Card 1 -->
-        <div class="col">
-            <div class="card h-100 border-0"> <!-- Removed rounded-5 from card -->
-                <img src="images/eyes1.png" class="card-img-top rounded-5 object-fit-cover" style="height: 18rem;" alt="Product Image">
-                <div class="card-body px-0"> <!-- Added px-0 to remove horizontal padding -->
-                    <p class="card-text">Maybelline New York  Gel Pencil Eyeliner</p>
-                    <h6>MRP: ₹509</h6>
-                </div>
+<!-- Related Products -->
+<div class="container py-5"> 
+  <h5 class="fw-bold mb-4">Related Products</h5> ok i hate you
+  <!-- Dynamic Product Sections -->
+<?php foreach ($allowedCategories as $category): ?>
+  <?php if (!empty($productsByCategory[$category])): ?>
+    <section class="container py-5">
+      <h2 class="fw-bold mb-4"><?= htmlspecialchars($category) ?></h2>
+      <div class="d-flex overflow-auto flex-nowrap gap-3 pb-2">
+        <?php foreach ($productsByCategory[$category] as $product): ?>
+        <a href="product_details.php?id=<?= $product['id'] ?>" class="text-decoration-none text-dark">
+          <div class="card h-100 border-0" style="min-width: 250px;">
+            <img src="uploads/<?= htmlspecialchars(basename($product['productImage'])) ?>" 
+                 class="card-img-top rounded-5 object-fit-cover" 
+                 style="height:17rem;" 
+                 alt="<?= htmlspecialchars($product['productName']) ?>">
+            <div class="card-body px-0">
+              <p class="card-text"><?= htmlspecialchars($product['productName']) ?></p>
+              <h6>MRP: ₹<?= htmlspecialchars($product['productPrice']) ?></h6>
             </div>
-        </div>
-        
-        <!-- Card 2 -->
-        <div class="col">
-            <div class="card h-100 border-0">
-                <img src="images/eyes2.png" class="card-img-top rounded-5 object-fit-cover" style="height:18rem;" alt="Product Image">
-                <div class="card-body px-0">
-                    <p class="card-text">Maybelline New York Lash Sensational High Mascara</p>
-                    <h6>MRP: ₹503</h6>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Card 3 -->
-        <div class="col">
-            <div class="card h-100 border-0">
-                <img src="images/eyes3.png" class="card-img-top rounded-5 object-fit-cover" style="height:18rem;" alt="Product Image">
-                <div class="card-body px-0">
-                    <p class="card-text">Nykaa Eyeshadow Palette</p>
-                    <h6>MRP: ₹244</h6>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Card 4 -->
-        <div class="col">
-            <div class="card h-100 border-0">
-                <img src="images/eyes4.png" class="card-img-top rounded-5 object-fit-cover" style="height:18rem;" alt="Product Image">
-                <div class="card-body px-0">
-                    <p class="card-text">SUGAR The Most Eligiblur Correcting Prime</p>
-                    <h6>MRP: ₹679</h6>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<!-- Tools & Brushes -->
-<section class="container py-3">
-    <h2 class="fw-bold mb-4" style="color:#C7026E;">Tools & Brushes</h2>
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-        <!-- Card 1 -->
-        <div class="col">
-            <div class="card h-100 border-0"> <!-- Removed rounded-5 from card -->
-                <img src="images/tools1.png" class="card-img-top rounded-5 object-fit-cover" style="height: 18rem;" alt="Product Image">
-                <div class="card-body px-0"> <!-- Added px-0 to remove horizontal padding -->
-                    <p class="card-text">MARS 4 In 1 Travel Brush</p>
-                    <h6>MRP: ₹619</h6>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Card 2 -->
-        <div class="col">
-            <div class="card h-100 border-0">
-                <img src="images/tools2.png" class="card-img-top rounded-5 object-fit-cover" style="height:18rem;" alt="Product Image">
-                <div class="card-body px-0">
-                    <p class="card-text">GUBB Eyelash Curler For Women</p>
-                    <h6>MRP: ₹289</h6>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Card 3 -->
-        <div class="col">
-            <div class="card h-100 border-0">
-                <img src="images/tools3.png" class="card-img-top rounded-5 object-fit-cover" style="height:18rem;" alt="Product Image">
-                <div class="card-body px-0">
-                    <p class="card-text">PAC Absolute Basics Brush Set</p>
-                    <h6>MRP: ₹4496</h6>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Card 4 -->
-        <div class="col">
-            <div class="card h-100 border-0">
-                <img src="images/tools4.png" class="card-img-top rounded-5 object-fit-cover" style="height:18rem;" alt="Product Image">
-                <div class="card-body px-0">
-                    <p class="card-text">Kayanara Transparent Makeup Kit</p>
-                    <h6>MRP: ₹406</h6>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<!-- Nails -->
-<section class="container py-3">
-    <h2 class="fw-bold mb-4" style="color:#C7026E;">Nails</h2>
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-        <!-- Card 1 -->
-        <div class="col">
-            <div class="card h-100 border-0"> <!-- Removed rounded-5 from card -->
-                <img src="images/nails1.png" class="card-img-top rounded-5 object-fit-cover" style="height: 18rem;" alt="Product Image">
-                <div class="card-body px-0"> <!-- Added px-0 to remove horizontal padding -->
-                    <p class="card-text">Lakme Color Crush Nailart U4</p>
-                    <h6>MRP: ₹199</h6>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Card 2 -->
-        <div class="col">
-            <div class="card h-100 border-0">
-                <img src="images/nails2.png" class="card-img-top rounded-5 object-fit-cover" style="height:18rem;" alt="Product Image">
-                <div class="card-body px-0">
-                    <p class="card-text">Nykaa Cosmetics Vegan Nail Enamel</p>
-                    <h6>MRP: ₹180</h6>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Card 3 -->
-        <div class="col">
-            <div class="card h-100 border-0">
-                <img src="images/nails3.png" class="card-img-top rounded-5 object-fit-cover" style="height:18rem;" alt="Product Image">
-                <div class="card-body px-0">
-                    <p class="card-text">Close up of nail polish</p>
-                    <h6>MRP: ₹530</h6>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Card 4 -->
-        <div class="col">
-            <div class="card h-100 border-0">
-                <img src="images/nails4.png" class="card-img-top rounded-5 object-fit-cover" style="height:18rem;" alt="Product Image">
-                <div class="card-body px-0">
-                    <p class="card-text">Colorbar Nail Polish Remover</p>
-                    <h6>MRP: ₹410</h6>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<!-- Makeup Kits & Combos -->
-<section class="container py-3">
-    <h2 class="fw-bold mb-4" style="color:#C7026E;">Makeup Kits & Combos</h2>
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-        <!-- Card 1 -->
-        <div class="col">
-            <div class="card h-100 border-0"> <!-- Removed rounded-5 from card -->
-                <img src="images/kits1.png" class="card-img-top rounded-5 object-fit-cover" style="height: 18rem;" alt="Product Image">
-                <div class="card-body px-0"> <!-- Added px-0 to remove horizontal padding -->
-                    <p class="card-text">Maybelline New York The Colossal Combo</p>
-                    <h6>MRP: ₹689</h6>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Card 2 -->
-        <div class="col">
-            <div class="card h-100 border-0">
-                <img src="images/kits2.png" class="card-img-top rounded-5 object-fit-cover" style="height:18rem;" alt="Product Image">
-                <div class="card-body px-0">
-                    <p class="card-text">Maybelline New York Super Stay Matte Ink</p>
-                    <h6>MRP: ₹1689</h6>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Card 3 -->
-        <div class="col">
-            <div class="card h-100 border-0">
-                <img src="images/kits3.png" class="card-img-top rounded-5 object-fit-cover" style="height:18rem;" alt="Product Image">
-                <div class="card-body px-0">
-                    <p class="card-text">Faces Canada Glow With The Flow Duo</p>
-                    <h6>MRP: ₹899</h6>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Card 4 -->
-        <div class="col">
-            <div class="card h-100 border-0">
-                <img src="images/kits4.png" class="card-img-top rounded-5 object-fit-cover" style="height:18rem;" alt="Product Image">
-                <div class="card-body px-0">
-                    <p class="card-text">Nykaa Tools & Accessories Beginner Makeup Brush</p>
-                    <h6>MRP: ₹1247</h6>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
+          </div>
+        </a>
+        <?php endforeach; ?>
+      </div>
+    </section>
+  <?php endif; ?>
+<?php endforeach; ?>
+</div>
 
     <div class="text-center mt-4">
       <span class="dot active"></span>

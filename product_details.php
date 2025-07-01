@@ -1,5 +1,5 @@
 <?php
-session_start();
+// session_start();
 include 'dbconnection.php';
 
 if (isset($_GET['id'])) {
@@ -17,6 +17,20 @@ if (isset($_GET['id'])) {
     exit;
 }
 ?>
+<?php
+include 'dbconnection.php';
+
+$query = "SELECT id, productName, productDescription, productPrice, productCategory, productImage FROM products";
+$result = mysqli_query($conn, $query);
+
+$productsByCategory = [];
+while ($row = mysqli_fetch_assoc($result)) {
+    $productsByCategory[$row['productCategory']][] = $row;
+}
+
+$allowedCategories = ['Skincare', 'Makeup', 'Haircare']; // fixed order
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -107,17 +121,30 @@ if (isset($_GET['id'])) {
 <!-- Related Products -->
 <div class="container py-5">
   <h5 class="fw-bold mb-4">Related Products</h5>
-  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-    <div class="col">
-      <div class="card h-100 border-0">
-        <img src="images/25.jpg" class="card-img-top rounded-5 object-fit-cover" style="height: 18rem;">
-        <div class="card-body px-0">
-          <p class="card-text">Minimalist Light Fluid SPF 50</p>
-          <h6>MRP: ₹499</h6>
-        </div>
+  <!-- Dynamic Product Sections -->
+<?php foreach ($allowedCategories as $category): ?>
+  <?php if (!empty($productsByCategory[$category])): ?>
+    <section class="container py-5">
+      <h2 class="fw-bold mb-4"><?= htmlspecialchars($category) ?></h2>
+      <div class="d-flex overflow-auto flex-nowrap gap-3 pb-2">
+        <?php foreach ($productsByCategory[$category] as $product): ?>
+        <a href="product_details.php?id=<?= $product['id'] ?>" class="text-decoration-none text-dark">
+          <div class="card h-100 border-0" style="min-width: 250px;">
+            <img src="uploads/<?= htmlspecialchars(basename($product['productImage'])) ?>" 
+                 class="card-img-top rounded-5 object-fit-cover" 
+                 style="height:17rem;" 
+                 alt="<?= htmlspecialchars($product['productName']) ?>">
+            <div class="card-body px-0">
+              <p class="card-text"><?= htmlspecialchars($product['productName']) ?></p>
+              <h6>MRP: ₹<?= htmlspecialchars($product['productPrice']) ?></h6>
+            </div>
+          </div>
+        </a>
+        <?php endforeach; ?>
       </div>
-    </div>
-  </div>
+    </section>
+  <?php endif; ?>
+<?php endforeach; ?>
 </div>
 
 <?php include 'Footer.php'; ?>

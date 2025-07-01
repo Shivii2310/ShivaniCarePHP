@@ -1,7 +1,6 @@
 <?php
-session_start();
 include 'dbconnection.php';
-
+session_start();
 if (!isset($_SESSION['user_id'])) {
     header("Location: SignIn.php");
     exit;
@@ -20,7 +19,7 @@ if (isset($_GET['delete'])) {
 
 // ✅ Fetch cart items
 $query = "SELECT * FROM cart_items WHERE user_id = $user_id";
-$result = mysqli_query($conn, $query);
+$result = mysqli_query($conn, query: $query);
 ?>
 <!DOCTYPE html>
 <html>

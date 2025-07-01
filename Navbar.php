@@ -1,5 +1,7 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 include 'dbconnection.php';
 
 // Calculate cart count
@@ -12,6 +14,7 @@ if (isset($_SESSION['user_id'])) {
     $cartCount = $cartData['total'] ?? 0;
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

@@ -1,3 +1,18 @@
+<?php
+session_start();
+include 'dbconnection.php';
+
+$query = "SELECT id, productName, productDescription, productPrice, productCategory, productImage FROM products";
+$result = mysqli_query($conn, $query);
+
+$productsByCategory = [];
+while ($row = mysqli_fetch_assoc($result)) {
+    $productsByCategory[$row['productCategory']][] = $row;
+}
+
+$allowedCategories = ['Skincare', 'Makeup', 'Haircare']; // fixed order
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -131,103 +146,31 @@
 <!-- Start Product cards  -->
 
 <!-- New Arrivals -->
-<section class="container py-5">
-    <h2 class="fw-bold mb-4 text-center">New Arrivals</h2>
-    
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-        <!-- Card 1 -->
-        <div class="col">
-            <div class="card h-100 border-0"> <!-- Removed rounded-5 from card -->
-                <img src="images/25.jpg" class="card-img-top rounded-5 object-fit-cover" style="height: 17rem;" alt="Product Image">
-                <div class="card-body px-0"> <!-- Added px-0 to remove horizontal padding -->
-                    <p class="card-text">Minimalist Light Fluid SPF 50 Face Sunscreen</p>
-                    <h6>MRP: ₹499</h6>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Card 2 -->
-        <div class="col">
-            <div class="card h-100 border-0">
-                <img src="images/11.jpg" class="card-img-top rounded-5 object-fit-cover" style="height:17rem;" alt="Product Image">
-                <div class="card-body px-0">
-                    <p class="card-text">Minimalist Light Fluid SPF 50 Face Sunscreen</p>
-                    <h6>MRP: ₹499</h6>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Card 3 -->
-        <div class="col">
-            <div class="card h-100 border-0">
-                <img src="images/10.jpg" class="card-img-top rounded-5 object-fit-cover" style="height:17rem;" alt="Product Image">
-                <div class="card-body px-0">
-                    <p class="card-text">Minimalist Light Fluid SPF 50 Face Sunscreen</p>
-                    <h6>MRP: ₹499</h6>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Card 4 -->
-        <div class="col">
-            <div class="card h-100 border-0">
-                <img src="images/26.jpg" class="card-img-top rounded-5 object-fit-cover" style="height:17rem;" alt="Product Image">
-                <div class="card-body px-0">
-                    <p class="card-text">Minimalist Light Fluid SPF 50 Face Sunscreen</p>
-                    <h6>MRP: ₹499</h6>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
 
-<section class="container py-5">
-  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-        <!-- Card 1 -->
-        <div class="col">
-            <div class="card h-100 border-0"> <!-- Removed rounded-5 from card -->
-                <img src="images/34.jpg" class="card-img-top rounded-5 object-fit-cover" style="height: 17rem;" alt="Product Image">
-                <div class="card-body px-0"> <!-- Added px-0 to remove horizontal padding -->
-                    <p class="card-text">Minimalist Light Fluid SPF 50 Face Sunscreen</p>
-                    <h6>MRP: ₹499</h6>
-                </div>
+<?php foreach ($allowedCategories as $category): ?>
+  <?php if (!empty($productsByCategory[$category])): ?>
+    <section class="container py-5">
+      <h2 class="fw-bold mb-4"><?= htmlspecialchars($category) ?></h2>
+      <div class="d-flex overflow-auto flex-nowrap gap-3 pb-2">
+        <?php foreach ($productsByCategory[$category] as $product): ?>
+        <a href="product_details.php?id=<?= $product['id'] ?>" class="text-decoration-none text-dark">
+          <div class="card h-100 border-0" style="min-width: 250px;">
+            <img src="uploads/<?= htmlspecialchars(basename($product['productImage'])) ?>" 
+                 class="card-img-top rounded-5 object-fit-cover" 
+                 style="height:17rem;" 
+                 alt="<?= htmlspecialchars($product['productName']) ?>">
+            <div class="card-body px-0">
+              <p class="card-text"><?= htmlspecialchars($product['productName']) ?></p>
+              <h6>MRP: ₹<?= htmlspecialchars($product['productPrice']) ?></h6>
             </div>
-        </div>
-        
-        <!-- Card 2 -->
-        <div class="col">
-            <div class="card h-100 border-0">
-                <img src="images/17.jpg" class="card-img-top rounded-5 object-fit-cover" style="height:17rem;" alt="Product Image">
-                <div class="card-body px-0">
-                    <p class="card-text">Minimalist Light Fluid SPF 50 Face Sunscreen</p>
-                    <h6>MRP: ₹499</h6>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Card 3 -->
-        <div class="col">
-            <div class="card h-100 border-0">
-                <img src="images/16.jpg" class="card-img-top rounded-5 object-fit-cover" style="height:17rem;" alt="Product Image">
-                <div class="card-body px-0">
-                    <p class="card-text">Minimalist Light Fluid SPF 50 Face Sunscreen</p>
-                    <h6>MRP: ₹499</h6>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Card 4 -->
-        <div class="col">
-            <div class="card h-100 border-0">
-                <img src="images/19.jpg" class="card-img-top rounded-5 object-fit-cover" style="height:16rem;" alt="Product Image">
-                <div class="card-body px-0">
-                    <p class="card-text">Minimalist Light Fluid SPF 50 Face Sunscreen</p>
-                    <h6>MRP: ₹499</h6>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+          </div>
+        </a>
+        <?php endforeach; ?>
+      </div>
+    </section>
+  <?php endif; ?>
+<?php endforeach; ?>
+
     <div class="text-center mt-4">
       <span class="dot active"></span>
       <span class="dot"></span>
