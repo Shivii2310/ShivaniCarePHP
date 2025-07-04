@@ -5,6 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>BRANDS</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+<style>
+    .v {
+    position: ;
+    left: 0;
+    top: 0;
+    transform: translateY(-50%);
+    color: green;
+    text-decoration: underline;
+    background-color: white;
+    font-weight: bold;
+    z-index: 1000;
+}
+
+.v:active {
+    color: darkgreen;
+    background-color: #e6ffe6;
+}
+  </style>
   <style>
 /* Start Animation  */
 .fade-up {
@@ -56,9 +74,6 @@
       display: block;
       color: #C7026E;
     }
-
-    
-
     /* Circles ON TOP with opacity */
     .circle-beige {
       position: absolute;
@@ -88,7 +103,6 @@
       .hero-content h2 {
         font-size: 20px;
       }
-
       .brands-text {
         font-size: 80px;
         top: 40px;
@@ -100,12 +114,30 @@
         display: none;
       }
     }
+       @media (max-width: 784px) {
+       .hero-content h2{
+        display:none;
+       }
+       .hero-content p{
+        top: 0;
+        bottom: 0;
+       }
+         .v {
+  display:none;
+}
+
+.v:active {
+   display:none;
+}
+      }
+      
   </style>
 </head>
 <body>
 <?php include 'Navbar.php';?>
 
 <div class="container"> 
+   <a href="inxed.php" class="v active text-underline-primary text-green">Brands</a>
 <section class="hero-section d-flex align-items-center">
   <!-- BRANDS text -->
   <div class="brands-text">
@@ -126,63 +158,55 @@
           how our products make<br />
           you feel
         </h2>
-        <p>Your beauty journey begins with choices<br />that love you back</p>
+        <p class="custom-position">Your beauty journey begins with choices<br />that love you back</p>
       </div>
     </div>
   </div>
 </section>
 
 
-<!-- New Arrivals -->
+<!-- popular logo -->
 <section class="container py-5">
-    <h2 class="fw-bold mb-4">New Arrivals</h2>
+    <h2 class="fw-bold mb-4 text-center" style="color: #c3006f;">POPULAR</h2>
     
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-        <!-- Card 1 -->
-        <div class="col">
-            <div class="card h-100 border-0"> <!-- Removed rounded-5 from card -->
-                <img src="images/25.jpg" class="card-img-top rounded-5 object-fit-cover" style="height: 17rem;" alt="Product Image">
-                <div class="card-body px-0"> <!-- Added px-0 to remove horizontal padding -->
-                    <p class="card-text">Minimalist Light Fluid SPF 50 Face Sunscreen</p>
-                    <h6>MRP: ₹499</h6>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Card 2 -->
-        <div class="col">
-            <div class="card h-100 border-0">
-                <img src="images/11.jpg" class="card-img-top rounded-5 object-fit-cover" style="height:17rem;" alt="Product Image">
-                <div class="card-body px-0">
-                    <p class="card-text">Minimalist Light Fluid SPF 50 Face Sunscreen</p>
-                    <h6>MRP: ₹499</h6>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Card 3 -->
-        <div class="col">
-            <div class="card h-100 border-0">
-                <img src="images/10.jpg" class="card-img-top rounded-5 object-fit-cover" style="height:17rem;" alt="Product Image">
-                <div class="card-body px-0">
-                    <p class="card-text">Minimalist Light Fluid SPF 50 Face Sunscreen</p>
-                    <h6>MRP: ₹499</h6>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Card 4 -->
-        <div class="col">
-            <div class="card h-100 border-0">
-                <img src="images/26.jpg" class="card-img-top rounded-5 object-fit-cover" style="height:17rem;" alt="Product Image">
-                <div class="card-body px-0">
-                    <p class="card-text">Minimalist Light Fluid SPF 50 Face Sunscreen</p>
-                    <h6>MRP: ₹499</h6>
-                </div>
-            </div>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 justify-content-center">
+        <div class="card h-100 border-0 d-flex justify-content-center align-items-center"> 
+            <img src="images/all logo1.png" class="card-img-top" style="height: auto; width: 65rem;" alt="Product Image">
         </div>
     </div>
 </section>
+
+<section class="container py-5">
+    <h2 class="fw-bold mb-4 text-center" style="color: #c3006f;">LUXE</h2>
+    
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 justify-content-center">
+        <div class="card h-100 border-0 d-flex justify-content-center align-items-center"> 
+            <img src="images/all logo5.png" class="card-img-top" style="height: auto; width: 65rem;" alt="Product Image">
+        </div>
+    </div>
+</section>
+
+<section class="container py-5">
+    <h2 class="fw-bold mb-4 text-center" style="color: #c3006f;">ONLY AT NAYKAA</h2>
+    
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 justify-content-center">
+        <div class="card h-100 border-0 d-flex justify-content-center align-items-center"> 
+            <img src="images/all logo3.png" class="card-img-top" style="height: auto; width: 65rem;" alt="Product Image">
+        </div>
+    </div>
+</section>
+
+<section class="container py-5">
+    <h2 class="fw-bold mb-4 text-center" style="color: #c3006f;">NEW LAUNCHES</h2>
+    
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 justify-content-center">
+        <div class="card h-100 border-0 d-flex justify-content-center align-items-center"> 
+            <img src="images/all logo4.png" class="card-img-top" style="height: auto; width: 65rem;" alt="Product Image">
+        </div>
+    </div>
+</section>
+
+
 <!-- Start  Animation  -->
 <script>
   window.addEventListener('load', () => {

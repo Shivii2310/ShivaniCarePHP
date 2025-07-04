@@ -7,11 +7,30 @@
   <title>Shivani's Care</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+  <style>
+    .v {
+    position: ;
+    left: 0;
+    top: 0;
+    transform: translateY(-50%);
+    color: green;
+    text-decoration: underline;
+    background-color: white;
+    font-weight: bold;
+    z-index: 1000;
+}
+
+.v:active {
+    color: darkgreen;
+    background-color: #e6ffe6;
+}
+  </style>
 </head>
 
 <body>
   <?php include 'Navbar.php'; ?>
   <div class="container">
+    <a href="inxed.php" class="v active text-underline-primary text-green">Fragrance</a>
     <section class="d-flex flex-wrap" style="background-color: #c3006f; min-height: 500px; margin-top:45px">
       <!-- Left Content -->
       <div class="col-md-6 d-flex flex-column justify-content-center align-items-center text-white">

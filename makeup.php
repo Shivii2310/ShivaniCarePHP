@@ -23,6 +23,26 @@ $allowedCategories = ['Skincare', 'Makeup', 'Haircare']; // fixed order
     <!-- <link rel="stylesheet" href="styles/index.css"> -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+  
+  <style>
+    .v {
+    position: ;
+    left: 0;
+    top: 0;
+    transform: translateY(-50%);
+    color: green;
+    text-decoration: underline;
+    background-color: white;
+    font-weight: bold;
+    z-index: 1000;
+}
+
+.v:active {
+    color: darkgreen;
+    background-color: #e6ffe6;
+}
+  </style>
+
   <style>
     .hero {
       background: linear-gradient(to right, #d1006e, #e47300);
@@ -56,6 +76,7 @@ $allowedCategories = ['Skincare', 'Makeup', 'Haircare']; // fixed order
 <body>
     <?php include 'Navbar.php';?>
    <div class="container">
+    <a href="inxed.php" class="v active text-underline-primary text-green">Makeup</a>
     <section class="hero d-md-flex" style="width:100%; height:400px; margin-top:45px">
   <div class="col-md-12 bg-pink text-white p-5 d-flex flex-column justify-content-center position-relative">
 
@@ -75,7 +96,7 @@ $allowedCategories = ['Skincare', 'Makeup', 'Haircare']; // fixed order
 
 <!-- Related Products -->
 <div class="container py-5"> 
-  <h5 class="fw-bold mb-4">Related Products</h5> ok i hate you
+  <h5 class="fw-bold mb-4">Related Products</h5>
   <!-- Dynamic Product Sections -->
 <?php foreach ($allowedCategories as $category): ?>
   <?php if (!empty($productsByCategory[$category])): ?>

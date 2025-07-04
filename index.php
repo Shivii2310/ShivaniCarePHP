@@ -20,19 +20,65 @@ $allowedCategories = ['Skincare', 'Makeup', 'Haircare']; // fixed order
   <title>Shivani's Care</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+<style>
+    .v {
+    position: ;
+    left: 0;
+    top: 0;
+    transform: translateY(-50%);
+    color: green;
+    text-decoration: underline;
+    background-color: white;
+    font-weight: bold;
+    z-index: 1000;
+}
+
+.v:active {
+    color: darkgreen;
+    background-color: #e6ffe6;
+}
+  </style>
+  <style>
+    /* Animation: Fade Up */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 1.2s ease;
+    }
+
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+  
+    /* Responsive positioning (optional) */
+    @media (max-width: 768px) {
+      .v {
+        top: 30%;
+        padding: 8px 10px;
+        font-size: 14px;
+      }
+    }
+  </style>
 </head>
 
 <body>
-<?php include 'Navbar.php';?>
+<?php include 'Navbar.php'; ?>
 
+<!-- Fixed Home Link -->
 <!-- Hero Section -->
 <div class="container">
+    <a href="inxed.php" class="v active text-underline-primary text-green">Home</a>
   <section class="d-flex flex-wrap" style="background-color: #c3006f; min-height: 500px; margin-top:45px">
     <div class="col-md-6 d-flex flex-column justify-content-center align-items-center text-white p-5">
-      <h1 class="display-1 fw-bold" style="opacity: 0.4; font-size: 200px;">NEW</h1>
-      <h3 class="text-center mt-3">New At <span class="fw-bold" style="font-size: 14px;">Shivani's Care</span></h3>
-      <p class="mt-2 text-center">Discover The Newest Beauty Trends.</p>
+      <div class="arrivals-text fade-up" id="arrivalsText">
+        <h1 class="display-1 fw-bold" style="opacity: 0.4; font-size: 200px;">NEW</h1>
+        <h3 class="text-center mt-3">New At <span class="fw-bold" style="font-size: 14px;">Shivani's Care</span></h3>
+        <p class="mt-2 text-center">Discover The Newest Beauty Trends.</p>
+      </div>
     </div>
+    <div class="hero-quote fade-up" id="heroQuote"></div>
     <div class="col-md-6 d-flex justify-content-center align-items-center">
       <img src="images/framef.png" alt="New Product" class="img-fluid" style="max-height: 100%; width: auto;">
     </div>
@@ -63,6 +109,7 @@ $allowedCategories = ['Skincare', 'Makeup', 'Haircare']; // fixed order
     </section>
   <?php endif; ?>
 <?php endforeach; ?>
+
 <!-- Dots -->
 <div class="text-center mt-4">
   <span class="dot active"></span>
@@ -109,6 +156,14 @@ $allowedCategories = ['Skincare', 'Makeup', 'Haircare']; // fixed order
     </div>
   </div>
 </section>
+
+<!-- Fade-up Animation Trigger -->
+<script>
+  window.addEventListener('load', () => {
+    document.getElementById('arrivalsText')?.classList.add('visible');
+    document.getElementById('heroQuote')?.classList.add('visible');
+  });
+</script>
 
 <?php include 'Footer.php'; ?>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

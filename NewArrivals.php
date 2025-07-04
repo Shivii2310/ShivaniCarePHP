@@ -20,6 +20,25 @@ $allowedCategories = ['Skincare', 'Makeup', 'Haircare']; // fixed order
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>New Arrivals</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+
+  <style>
+    .v {
+    position: ;
+    left: 0;
+    top: 0;
+    transform: translateY(-50%);
+    color: green;
+    text-decoration: underline;
+    background-color: white;
+    font-weight: bold;
+    z-index: 1000;
+}
+
+.v:active {
+    color: darkgreen;
+    background-color: #e6ffe6;
+}
+  </style>
   <style>
 
       /* Circles ON TOP with opacity */
@@ -120,6 +139,7 @@ $allowedCategories = ['Skincare', 'Makeup', 'Haircare']; // fixed order
 <body>
 <?php include 'Navbar.php';?>
 <div class="container py-3">
+   <a href="inxed.php" class="v active text-underline-primary text-green">NewArrivals</a>
 <section class="hero-section">
   <!-- Background Text -->
   <div class="arrivals-text" id="arrivalsText">
