@@ -21,7 +21,7 @@ $result = mysqli_query($conn, $query);
 <body>
 <?php include 'Navbar.php'; ?>
 
-<div class="container py-5">
+<div class="container py-5"> 
   <h2 class="mb-4">Checkout</h2>
 
   <?php if (mysqli_num_rows($result) > 0): ?>

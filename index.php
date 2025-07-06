@@ -61,6 +61,25 @@ $allowedCategories = ['Skincare', 'Makeup', 'Haircare']; // fixed order
       }
     }
   </style>
+  
+<style>
+/* Scroll Container Styles */
+.scroll-container {
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    scroll-behavior: smooth;
+    -ms-overflow-style: none;  /* IE & Edge */
+    scrollbar-width: none;     /* Firefox */
+}
+.scroll-container::-webkit-scrollbar {
+    display: none;  /* Chrome, Safari, Edge */
+}
+</style>
+
+
+</style>
+
 </head>
 
 <body>
@@ -90,7 +109,7 @@ $allowedCategories = ['Skincare', 'Makeup', 'Haircare']; // fixed order
   <?php if (!empty($productsByCategory[$category])): ?>
     <section class="container py-5">
       <h2 class="fw-bold mb-4"><?= htmlspecialchars($category) ?></h2>
-      <div class="d-flex overflow-auto flex-nowrap gap-3 pb-2">
+      <div class="d-flex scroll-container overflow-auto flex-nowrap gap-3 pb-2">
         <?php foreach ($productsByCategory[$category] as $product): ?>
         <a href="product_details.php?id=<?= $product['id'] ?>" class="text-decoration-none text-dark">
           <div class="card h-100 border-0" style="min-width: 250px;">
