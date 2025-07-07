@@ -1,3 +1,15 @@
+<?php
+include 'dbconnection.php';
+
+$query = "SELECT id, productName, productDescription, productPrice, productCategory, productImage FROM products";
+$result = mysqli_query($conn, $query);
+
+$productsByCategory = [];
+while ($row = mysqli_fetch_assoc($result)) {
+    $productsByCategory[$row['productCategory']][] = $row;
+}
+$allowedCategories = ['Skincare', 'Makeup', 'Haircare']; // fixed order
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,6 +36,28 @@
     color: darkgreen;
     background-color: #e6ffe6;
 }
+/* Fade-up animation styles */
+.fade-up {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 1.2s ease, transform 1.2s ease;
+}
+.fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+/* Hide scrollbar */
+.scroll-container {
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    scroll-behavior: smooth;
+    -ms-overflow-style: none;  /* IE & Edge */
+    scrollbar-width: none;     /* Firefox */
+}
+.scroll-container::-webkit-scrollbar {
+    display: none;  /* Chrome, Safari, Edge */
+}
   </style>
 </head>
 <body>
@@ -33,164 +67,42 @@
     <section class="d-flex flex-wrap" style="background-color: #c3006f; min-height: 500px; margin-top:45px">
   <!-- Left Content -->
   <div class="col-md-6 d-flex flex-column justify-content-center align-items-center text-white p-5">
-    <h1 class="display-1 fw-bold" style="opacity: 0.4; font-size: 200px;">NEW</h1>
-    <h3 class="text-end"><span class="fst-italic" style="font-size: 25px;">Love the skin <br> you're in</span></h3>
+    <h1 class="display-1 fw-bold fade-up" style="opacity: 0.4; font-size: 200px;">NEW</h1>
+    <h3 class="text-end fade-up"><span class="fst-italic" style="font-size: 25px;">Love the skin <br> you're in</span></h3>
   </div>
 
   <!-- Right Image -->
   <div class="col-md-6 d-flex justify-content-center align-items-center">
-    <img src="images/framef.png" alt="New Product" class="img-fluid" style="max-height: 100%; width: auto;">
+    <img src="images/45.png" alt="New Product" class="img-fluid" style="max-height: 100%; width: auto;">
   </div>
 </section>
 </div>
     
 <!-- New Arrivals -->
-<section class="container py-5">
-    <h2 class="fw-bold mb-4 text-center">New Arrivals</h2>
-    <h2 class="fw-bold mb-4" style="color:#C7026E;">Face</h2>
-    
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-        <!-- Card 1 -->
-        <div class="col">
-            <div class="card h-100 border-0"> <!-- Removed rounded-5 from card -->
-                <img src="images/25.jpg" class="card-img-top rounded-5 object-fit-cover" style="height: 17rem;" alt="Product Image">
-                <div class="card-body px-0"> <!-- Added px-0 to remove horizontal padding -->
-                    <p class="card-text">Nykaa Naturals SUNKISSED GLOW Invisible Sunscreen</p>
-                    <h6>MRP: ₹384</h6>
-                </div>
+<!-- Dynamic Product Sections -->
+<?php foreach ($allowedCategories as $category): ?>
+  <?php if (!empty($productsByCategory[$category])): ?>
+    <section class="container py-5">
+      <h2 class="fw-bold mb-4 fade-up"><?= htmlspecialchars($category) ?></h2>
+      <div class="d-flex scroll-container overflow-auto flex-nowrap gap-3 pb-2">
+        <?php foreach ($productsByCategory[$category] as $product): ?>
+        <a href="product_details.php?id=<?= $product['id'] ?>" class="text-decoration-none text-dark">
+          <div class="card h-100 border-0 fade-up" style="min-width: 250px">
+            <img src="uploads/<?= htmlspecialchars(basename($product['productImage'])) ?>" 
+                 class="card-img-top rounded-5 object-fit-cover"
+                 style="height:17rem;" 
+                 alt="<?= htmlspecialchars($product['productName']) ?>">
+            <div class="card-body px-0">
+              <p class="card-text"><?= htmlspecialchars($product['productName']) ?></p>
+              <h6>MRP: ₹<?= htmlspecialchars($product['productPrice']) ?></h6>
             </div>
-        </div>
-        
-        <!-- Card 2 -->
-        <div class="col">
-            <div class="card h-100 border-0">
-                <img src="images/facef.png" class="card-img-top rounded-5 object-fit-cover" style="height:17rem;" alt="Product Image">
-                <div class="card-body px-0">
-                    <p class="card-text">NYX Professional Makeup Conceal</p>
-                    <h6>MRP: ₹861</h6>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Card 3 -->
-        <div class="col">
-            <div class="card h-100 border-0">
-                <img src="images/10.jpg" class="card-img-top rounded-5 object-fit-cover" style="height:17rem;" alt="Product Image">
-                <div class="card-body px-0">
-                    <p class="card-text">Mario Badescu Exfoliating and Brightening Body Wash</p>
-                    <h6>MRP: ₹925</h6>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Card 4 -->
-        <div class="col">
-            <div class="card h-100 border-0">
-                <img src="images/26.jpg" class="card-img-top rounded-5 object-fit-cover" style="height:17rem;" alt="Product Image">
-                <div class="card-body px-0">
-                    <p class="card-text">Eucerin Pigment Control Sunscreen</p>
-                    <h6>MRP: ₹1440</h6>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section class="container py-5">
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-        <!-- Card 1 -->
-        <div class="col">
-            <div class="card h-100 border-0"> <!-- Removed rounded-5 from card -->
-                <img src="images/face11.png" class="card-img-top rounded-5 object-fit-cover" style="height: 17rem;" alt="Product Image">
-                <div class="card-body px-0"> <!-- Added px-0 to remove horizontal padding -->
-                    <p class="card-text">Cetaphil Bright Healthy Radiance Perfecting Serum</p>
-                    <h6>MRP: ₹871</h6>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Card 2 -->
-        <div class="col">
-            <div class="card h-100 border-0">
-                <img src="images/ponds.png" class="card-img-top rounded-5 object-fit-cover" style="height:17rem;" alt="Product Image">
-                <div class="card-body px-0">
-                    <p class="card-text">Ponds Age Miracle Anti Aging Day Cream</p>
-                    <h6>MRP: ₹764</h6>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Card 3 -->
-        <div class="col">
-            <div class="card h-100 border-0">
-                <img src="images/face12.png" class="card-img-top rounded-5 object-fit-cover" style="height:17rem;" alt="Product Image">
-                <div class="card-body px-0">
-                    <p class="card-text">Cetaphil Brightening Day Protection Cream</p>
-                    <h6>MRP: ₹1169</h6>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Card 4 -->
-        <div class="col">
-            <div class="card h-100 border-0">
-                <img src="images/face9.png" class="card-img-top rounded-5 object-fit-cover" style="height:17rem;" alt="Product Image">
-                <div class="card-body px-0">
-                    <p class="card-text">O3+ D -TAN Face Pack for Tan Removal</p>
-                    <h6>MRP: ₹1550</h6>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section class="container py-5">
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-        <!-- Card 1 -->
-        <div class="col">
-            <div class="card h-100 border-0"> <!-- Removed rounded-5 from card -->
-                <img src="images/everyuth.png" class="card-img-top rounded-5 object-fit-cover" style="height: 17rem;" alt="Product Image">
-                <div class="card-body px-0"> <!-- Added px-0 to remove horizontal padding -->
-                    <p class="card-text">Everyuth Naturals Tan Removal Pack for Face & Body</p>
-                    <h6>MRP: ₹589</h6>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Card 2 -->
-        <div class="col">
-            <div class="card h-100 border-0">
-                <img src="images/face14.png" class="card-img-top rounded-5 object-fit-cover" style="height:17rem;" alt="Product Image">
-                <div class="card-body px-0">
-                    <p class="card-text">Outshine Korean Glass Skin Serum</p>
-                    <h6>MRP: ₹1395</h6>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Card 3 -->
-        <div class="col">
-            <div class="card h-100 border-0">
-                <img src="images/face15.png" class="card-img-top rounded-5 object-fit-cover" style="height:17rem;" alt="Product Image">
-                <div class="card-body px-0">
-                    <p class="card-text">Chicnutrix Mighty Collagen Japanese</p>
-                    <h6>MRP: ₹1775</h6>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Card 4 -->
-        <div class="col">
-            <div class="card h-100 border-0">
-                <img src="images/face16.png" class="card-img-top rounded-5 object-fit-cover" style="height:17rem;" alt="Product Image">
-                <div class="card-body px-0">
-                    <p class="card-text">La Shield Supersaver Combo</p>
-                    <h6>MRP: ₹1360</h6>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+          </div>
+        </a>
+        <?php endforeach; ?>
+      </div>
+    </section>
+  <?php endif; ?>
+<?php endforeach; ?>
 
 <!-- Brands -->
  <section class="text-center pt-5">
@@ -217,6 +129,21 @@
       <img src="images/face19.png" class="img-fluid" width="250" alt="poster 3" />
     </div>
   </section>
+
+  <!-- Scroll Animation Script -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+});
+</script>
 
     <?php include 'footer.php';?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

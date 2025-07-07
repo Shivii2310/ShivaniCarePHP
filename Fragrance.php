@@ -1,3 +1,16 @@
+<?php
+include 'dbconnection.php';
+
+$query = "SELECT id, productName, productDescription, productPrice, productCategory, productImage FROM products";
+$result = mysqli_query($conn, $query);
+
+$productsByCategory = [];
+while ($row = mysqli_fetch_assoc($result)) {
+    $productsByCategory[$row['productCategory']][] = $row;
+}
+
+$allowedCategories = ['Skincare', 'Makeup', 'Haircare']; // fixed order
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -24,6 +37,28 @@
     color: darkgreen;
     background-color: #e6ffe6;
 }
+/* Fade-up animation styles */
+.fade-up {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 1.2s ease, transform 1.2s ease;
+}
+.fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+/* Hide scrollbar */
+.scroll-container {
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    scroll-behavior: smooth;
+    -ms-overflow-style: none;  /* IE & Edge */
+    scrollbar-width: none;     /* Firefox */
+}
+.scroll-container::-webkit-scrollbar {
+    display: none;  /* Chrome, Safari, Edge */
+}
   </style>
 </head>
 
@@ -33,12 +68,12 @@
     <a href="inxed.php" class="v active text-underline-primary text-green">Fragrance</a>
     <section class="d-flex flex-wrap" style="background-color: #c3006f; min-height: 500px; margin-top:45px">
       <!-- Left Content -->
-      <div class="col-md-6 d-flex flex-column justify-content-center align-items-center text-white">
-        <h1 class="display-1 text-center fw-bold" style="opacity: 0.4; font-size: 120px; margin-left:250px;">FRAGRANCE
+      <div class="col-md-6 d-flex flex-column justify-content-center align-items-center text-white fade-up">
+        <h1 class="display-1 text-center fw-bold fade-up" style="opacity: 0.4; font-size: 120px; margin-left:250px;">FRAGRANCE
         </h1>
         <h3 class="text-center mt-3" style="margin-left: 330px;">New At <span class="fw-bold"
             style="font-size: 14px; ">Shivani's Care</span></h3>
-        <p class="mt-2 text-center" style="margin-left: 330px;">Discover The Newest Beauty Trends.</p>
+        <p class="mt-2 text-center fade-up " style="margin-left: 330px;">Discover The Newest Beauty Trends.</p>
       </div>
 
       <!-- Right Image -->
@@ -50,158 +85,30 @@
   </div>
 
 <!-- New Arrivals -->
-<section class="container py-5">
-    <h2 class="fw-bold mb-4 text-center">New Arrivals</h2>
-    <h2 class="fw-bold mb-4" style="color:#C7026E;">Fragrance</h2>
-    
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-        <!-- Card 1 -->
-        <div class="col">
-            <div class="card h-100 border-0"> <!-- Removed rounded-5 from card -->
-                <img src="images/perfume.png" class="card-img-top rounded-5 object-fit-cover" style="height: 17rem;" alt="Product Image">
-                <div class="card-body px-0"> <!-- Added px-0 to remove horizontal padding -->
-                    <p class="card-text">Bella Vita Luxury Perfumes Gift Set For Women</p>
-                    <h6>MRP: ₹549</h6>
-                </div>
+<!-- Dynamic Product Sections -->
+<?php foreach ($allowedCategories as $category): ?>
+  <?php if (!empty($productsByCategory[$category])): ?>
+    <section class="container py-5">
+      <h2 class="fw-bold mb-4 fade-up"><?= htmlspecialchars($category) ?></h2>
+      <div class="d-flex scroll-container overflow-auto flex-nowrap gap-3 pb-2">
+        <?php foreach ($productsByCategory[$category] as $product): ?>
+        <a href="product_details.php?id=<?= $product['id'] ?>" class="text-decoration-none text-dark">
+          <div class="card h-100 border-0 fade-up" style="min-width: 250px">
+            <img src="uploads/<?= htmlspecialchars(basename($product['productImage'])) ?>" 
+                 class="card-img-top rounded-5 object-fit-cover"
+                 style="height:17rem;" 
+                 alt="<?= htmlspecialchars($product['productName']) ?>">
+            <div class="card-body px-0">
+              <p class="card-text"><?= htmlspecialchars($product['productName']) ?></p>
+              <h6>MRP: ₹<?= htmlspecialchars($product['productPrice']) ?></h6>
             </div>
-        </div>
-        
-        <!-- Card 2 -->
-        <div class="col">
-            <div class="card h-100 border-0">
-                <img src="images/perfume1.png" class="card-img-top rounded-5 object-fit-cover" style="height:17rem;" alt="Product Image">
-                <div class="card-body px-0">
-                    <p class="card-text">SKINN Nox Pour Homme Eau De Parfum</p>
-                    <h6>MRP: ₹3995</h6>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Card 3 -->
-        <div class="col">
-            <div class="card h-100 border-0">
-                <img src="images/perfume4.png" class="card-img-top rounded-5 object-fit-cover" style="height:17rem;" alt="Product Image">
-                <div class="card-body px-0">
-                    <p class="card-text">RENEE Eau De Parfum</p>
-                    <h6>MRP: ₹519</h6>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Card 4 -->
-        <div class="col">
-            <div class="card h-100 border-0">
-                <img src="images/perfume3.png" class="card-img-top rounded-5 object-fit-cover" style="height:17rem;" alt="Product Image">
-                <div class="card-body px-0">
-                    <p class="card-text">Bella Vita Luxury Date Woman Perfume</p>
-                    <h6>MRP: ₹575</h6>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section class="container py-5">    
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-        <!-- Card 1 -->
-        <div class="col">
-            <div class="card h-100 border-0"> <!-- Removed rounded-5 from card -->
-                <img src="images/perfume5.png" class="card-img-top rounded-5 object-fit-cover" style="height: 17rem;" alt="Product Image">
-                <div class="card-body px-0"> <!-- Added px-0 to remove horizontal padding -->
-                    <p class="card-text">Engage Yin Eau De Parfum for Men</p>
-                    <h6>MRP: ₹389</h6>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Card 2 -->
-        <div class="col">
-            <div class="card h-100 border-0">
-                <img src="images/perfume1.png" class="card-img-top rounded-5 object-fit-cover" style="height:17rem;" alt="Product Image">
-                <div class="card-body px-0">
-                    <p class="card-text">SKINN Nox Pour Femme Eau De Parfum</p>
-                    <h6>MRP: ₹4995</h6>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Card 3 -->
-        <div class="col">
-            <div class="card h-100 border-0">
-                <img src="images/perfume6.png" class="card-img-top rounded-5 object-fit-cover" style="height:17rem;" alt="Product Image">
-                <div class="card-body px-0">
-                    <p class="card-text">HUGO BOSS Men Boss Bottled Parfum </p>
-                    <h6>MRP: ₹10200</h6>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Card 4 -->
-        <div class="col">
-            <div class="card h-100 border-0">
-                <img src="images/perfume7.png" class="card-img-top rounded-5 object-fit-cover" style="height:17rem;" alt="Product Image">
-                <div class="card-body px-0">
-                    <p class="card-text">Carolina Herrera Good Girl Eau de Parfum</p>
-                    <h6>MRP: ₹8118</h6>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section class="container py-5">    
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-        <!-- Card 1 -->
-        <div class="col">
-            <div class="card h-100 border-0"> <!-- Removed rounded-5 from card -->
-                <img src="images/perfume8.png" class="card-img-top rounded-5 object-fit-cover" style="height: 17rem;" alt="Product Image">
-                <div class="card-body px-0"> <!-- Added px-0 to remove horizontal padding -->
-                    <p class="card-text">Calvin Klein One Perfume</p>
-                    <h6>MRP: ₹4760</h6>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Card 2 -->
-        <div class="col">
-            <div class="card h-100 border-0">
-                <img src="images/perfume9.png" class="card-img-top rounded-5 object-fit-cover" style="height:17rem;" alt="Product Image">
-                <div class="card-body px-0">
-                    <p class="card-text">CHANEL Mademoiselle Intense Eau De Parfum</p>
-                    <h6>MRP: ₹13800</h6>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Card 3 -->
-        <div class="col">
-            <div class="card h-100 border-0">
-                <img src="images/perfume10.png" class="card-img-top rounded-5 object-fit-cover" style="height:17rem;" alt="Product Image">
-                <div class="card-body px-0">
-                    <p class="card-text">Dior Homme By Christian Dior For Men</p>
-                    <h6>MRP: ₹14999</h6>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Card 4 -->
-        <div class="col">
-            <div class="card h-100 border-0">
-                <img src="images/perfume11.png" class="card-img-top rounded-5 object-fit-cover" style="height:17rem;" alt="Product Image">
-                <div class="card-body px-0">
-                    <p class="card-text">Gucci Bloom Profumo Di Fiori Eau De Parfum</p>
-                    <h6>MRP: ₹8450</h6>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-
-
-
-
-
+          </div>
+        </a>
+        <?php endforeach; ?>
+      </div>
+    </section>
+  <?php endif; ?>
+<?php endforeach; ?>
 
 
   <!-- Brands -->
@@ -229,6 +136,21 @@
       <img src="images/perfume15.png" class="img-fluid" width="230" alt="poster 3" />
     </div>
   </section>
+
+  <!-- Scroll Animation Script -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+});
+</script>
 
   <?php include 'footer.php'; ?>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

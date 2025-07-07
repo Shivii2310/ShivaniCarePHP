@@ -38,6 +38,28 @@ $allowedCategories = ['Skincare', 'Makeup', 'Haircare']; // fixed order
     color: darkgreen;
     background-color: #e6ffe6;
 }
+/* Fade-up animation styles */
+.fade-up {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 1.2s ease, transform 1.2s ease;
+}
+.fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+/* Hide scrollbar */
+.scroll-container {
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    scroll-behavior: smooth;
+    -ms-overflow-style: none;  /* IE & Edge */
+    scrollbar-width: none;     /*Firefox*/
+}
+.scroll-container::-webkit-scrollbar {
+    display: none;  /* Chrome, Safari, Edge */
+}
   </style>
   <style>
 
@@ -170,8 +192,8 @@ $allowedCategories = ['Skincare', 'Makeup', 'Haircare']; // fixed order
 <?php foreach ($allowedCategories as $category): ?>
   <?php if (!empty($productsByCategory[$category])): ?>
     <section class="container py-5">
-      <h2 class="fw-bold mb-4"><?= htmlspecialchars($category) ?></h2>
-      <div class="d-flex overflow-auto flex-nowrap gap-3 pb-2">
+      <h2 class="fw-bold mb-4 fade-up"><?= htmlspecialchars($category) ?></h2>
+      <div class="d-flex scroll-container overflow-auto flex-nowrap gap-3 pb-2">
         <?php foreach ($productsByCategory[$category] as $product): ?>
         <a href="product_details.php?id=<?= $product['id'] ?>" class="text-decoration-none text-dark">
           <div class="card h-100 border-0" style="min-width: 250px;">
@@ -226,5 +248,6 @@ $allowedCategories = ['Skincare', 'Makeup', 'Haircare']; // fixed order
 </script>
 <!-- End Animation  -->
 <?php include 'Footer.php';?>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

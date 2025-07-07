@@ -1,3 +1,17 @@
+<?php
+include 'dbconnection.php';
+
+$query = "SELECT id, productName, productDescription, productPrice, productCategory, productImage FROM products";
+$result = mysqli_query($conn, $query);
+
+$productsByCategory = [];
+while ($row = mysqli_fetch_assoc($result)) {
+    $productsByCategory[$row['productCategory']][] = $row;
+}
+
+$allowedCategories = ['Skincare', 'Makeup', 'Haircare']; // fixed order
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -20,10 +34,31 @@
     font-weight: bold;
     z-index: 1000;
 }
-
 .v:active {
     color: darkgreen;
     background-color: #e6ffe6;
+}
+/* Fade-up animation styles */
+.fade-up {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 1.2s ease, transform 1.2s ease;
+}
+.fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+/* Hide scrollbar */
+.scroll-container {
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    scroll-behavior: smooth;
+    -ms-overflow-style: none;  /* IE & Edge */
+    scrollbar-width: none;     /* Firefox */
+}
+.scroll-container::-webkit-scrollbar {
+    display: none;  /* Chrome, Safari, Edge */
 }
   </style>
 </head>
@@ -34,7 +69,7 @@
      <a href="inxed.php" class="v active text-underline-primary text-green">Haircare</a>
     <section class="d-flex flex-wrap" style="background-color: #c3006f; min-height: 500px; margin-top:45px">
       <!-- Left Content -->
-      <div class="col-md-6 d-flex flex-column justify-content-center align-items-center text-white">
+      <div class="col-md-6 d-flex flex-column justify-content-center align-items-center text-white fade-up">
         <h1 class="display-1 text-center fw-bold" style="opacity: 0.4; font-size: 120px; margin-left:250px;">HAIR <br></h1>
         <h1 class="display-5" style="opacity: 0.4; font-size: 80px; margin-left:650px; line-height:30px">CARE</h1>
         <h3 class="text-center mt-3" style="margin-left: 230px;">New At <span class="fw-bold"
@@ -50,152 +85,31 @@
   </div>
 
 <!-- New Arrivals -->
-<section class="container py-5">
-    <h2 class="fw-bold mb-4 text-center">New Arrivals</h2>
-    <h2 class="fw-bold mb-4" style="color:#C7026E;">Fragrance</h2>
-    
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-        <!-- Card 1 -->
-        <div class="col">
-            <div class="card h-100 border-0"> <!-- Removed rounded-5 from card -->
-                <img src="images/hair1.png" class="card-img-top rounded-5 object-fit-cover" style="height: 17rem;" alt="Product Image">
-                <div class="card-body px-0"> <!-- Added px-0 to remove horizontal padding -->
-                    <p class="card-text">Plum Peptides Shampoo with Coconut Milk for Dry & Rough Hair </p>
-                    <h6>MRP: ₹320</h6>
-                </div>
+<!-- Dynamic Product Sections -->
+<?php foreach ($allowedCategories as $category): ?>
+  <?php if (!empty($productsByCategory[$category])): ?>
+    <section class="container py-5">
+      <h2 class="fw-bold mb-4 fade-up"><?= htmlspecialchars($category) ?></h2>
+      <div class="d-flex scroll-container overflow-auto flex-nowrap gap-3 pb-2">
+        <?php foreach ($productsByCategory[$category] as $product): ?>
+        <a href="product_details.php?id=<?= $product['id'] ?>" class="text-decoration-none text-dark">
+          <div class="card h-100 border-0 fade-up" style="min-width: 250px">
+            <img src="uploads/<?= htmlspecialchars(basename($product['productImage'])) ?>" 
+                 class="card-img-top rounded-5 object-fit-cover"
+                 style="height:17rem;" 
+                 alt="<?= htmlspecialchars($product['productName']) ?>">
+            <div class="card-body px-0">
+              <p class="card-text"><?= htmlspecialchars($product['productName']) ?></p>
+              <h6>MRP: ₹<?= htmlspecialchars($product['productPrice']) ?></h6>
             </div>
-        </div>
-        
-        <!-- Card 2 -->
-        <div class="col">
-            <div class="card h-100 border-0">
-                <img src="images/hair6.png" class="card-img-top rounded-5 object-fit-cover" style="height:17rem;" alt="Product Image">
-                <div class="card-body px-0">
-                    <p class="card-text">Anomaly Clarifying Shampoo for Deep Cleanse with Charcoal</p>
-                    <h6>MRP: ₹820</h6>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Card 3 -->
-        <div class="col">
-            <div class="card h-100 border-0">
-                <img src="images/hair5.png" class="card-img-top rounded-5 object-fit-cover" style="height:17rem;" alt="Product Image">
-                <div class="card-body px-0">
-                    <p class="card-text">L'Oreal Paris Total Repair 5 Repairing Shampoo With Keratin </p>
-                    <h6>MRP: ₹1095</h6>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Card 4 -->
-        <div class="col">
-            <div class="card h-100 border-0">
-                <img src="images/hair4.png" class="card-img-top rounded-5 object-fit-cover" style="height:17rem;" alt="Product Image">
-                <div class="card-body px-0">
-                    <p class="card-text">Tresemme Keratin Smooth Shampoo for Straighter Shinier Hair</p>
-                    <h6>MRP: ₹895</h6>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+          </div>
+        </a>
+        <?php endforeach; ?>
+      </div>
+    </section>
+  <?php endif; ?>
+<?php endforeach; ?>
 
-<section class="container py-5">    
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-        <!-- Card 1 -->
-        <div class="col">
-            <div class="card h-100 border-0"> <!-- Removed rounded-5 from card -->
-                <img src="images/hair7.png" class="card-img-top rounded-5 object-fit-cover" style="height: 17rem;" alt="Product Image">
-                <div class="card-body px-0"> <!-- Added px-0 to remove horizontal padding -->
-                    <p class="card-text">Kerastase Genesis Anti-Hair Fall Daily Scalp Serum</p>
-                    <h6>MRP: ₹5100</h6>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Card 2 -->
-        <div class="col">
-            <div class="card h-100 border-0">
-                <img src="images/hair8.png" class="card-img-top rounded-5 object-fit-cover" style="height:17rem;" alt="Product Image">
-                <div class="card-body px-0">
-                    <p class="card-text">Be Bodywise Hair Growth Serum Roll On</p>
-                    <h6>MRP: ₹599</h6>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Card 3 -->
-        <div class="col">
-            <div class="card h-100 border-0">
-                <img src="images/hair9.png" class="card-img-top rounded-5 object-fit-cover" style="height:17rem;" alt="Product Image">
-                <div class="card-body px-0">
-                    <p class="card-text">Matrix Opti.Care Professional Conditioner for Frizzy Hair</p>
-                    <h6>MRP: ₹340</h6>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Card 4 -->
-        <div class="col">
-            <div class="card h-100 border-0">
-                <img src="images/hair10.png" class="card-img-top rounded-5 object-fit-cover" style="height:17rem;" alt="Product Image">
-                <div class="card-body px-0">
-                    <p class="card-text">Redken Acidic Bonding Concentrate Conditioner With Citric Acid</p>
-                    <h6>MRP: ₹2500</h6>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section class="container py-5">    
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-        <!-- Card 1 -->
-        <div class="col">
-            <div class="card h-100 border-0"> <!-- Removed rounded-5 from card -->
-                <img src="images/hair11.png" class="card-img-top rounded-5 object-fit-cover" style="height: 17rem;" alt="Product Image">
-                <div class="card-body px-0"> <!-- Added px-0 to remove horizontal padding -->
-                    <p class="card-text">Nat Habit Hibiscus Amla Hair Growth Rosemary Coconut Castor</p>
-                    <h6>MRP: ₹332</h6>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Card 2 -->
-        <div class="col">
-            <div class="card h-100 border-0">
-                <img src="images/hair12.png" class="card-img-top rounded-5 object-fit-cover" style="height:17rem;" alt="Product Image">
-                <div class="card-body px-0">
-                    <p class="card-text">SP Luxe Oil Keratin Restore  Almond Oils </p>
-                    <h6>MRP: ₹1200</h6>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Card 3 -->
-        <div class="col">
-            <div class="card h-100 border-0">
-                <img src="images/hair13.png" class="card-img-top rounded-5 object-fit-cover" style="height:17rem;" alt="Product Image">
-                <div class="card-body px-0">
-                    <p class="card-text">Ktein 5 In 1 Hot Air Hair Styler</p>
-                    <h6>MRP: ₹1799</h6>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Card 4 -->
-        <div class="col">
-            <div class="card h-100 border-0">
-                <img src="images/hair14.png" class="card-img-top rounded-5 object-fit-cover" style="height:17rem;" alt="Product Image">
-                <div class="card-body px-0">
-                    <p class="card-text">Bare Anatomy Colour Protect Hair Mask</p>
-                    <h6>MRP: ₹629</h6>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
 
   <!-- Brands -->
   <section class="text-center pt-5">
@@ -222,6 +136,20 @@
       <img src="images/hair14.png" class="img-fluid" width="200" alt="poster 3" />
     </div>
   </section>
+  <!-- Scroll Animation Script -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+});
+</script>
 
   <?php include 'footer.php'; ?>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
